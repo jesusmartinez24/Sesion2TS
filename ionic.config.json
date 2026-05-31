@@ -1,0 +1,7 @@
+{
+  "name": "nuevoionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
