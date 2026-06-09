@@ -1,49 +1,75 @@
 import { Component } from '@angular/core';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonItem,
+  IonInput,
+  IonButton,
+  IonList,
+  IonLabel,
+  IonIcon
+} from '@ionic/angular/standalone';
+
 import { FormsModule } from '@angular/forms';
-import { IonHeader, IonToolbar, IonTitle, IonContent,
-  IonItem, IonLabel, IonInput, IonList, IonButton } from '@ionic/angular/standalone';
-import { Task } from '../model/task.model';
+
+import { addIcons } from 'ionicons';
+import { addOutline } from 'ionicons/icons';
+
+interface Task {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  finalizado: boolean;
+  prioridad?: 'baja' | 'media' | 'alta';
+}
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent,
-    IonItem, IonLabel, IonInput, IonList, IonButton, FormsModule],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonItem,
+    IonInput,
+    IonButton,
+    IonList,
+    IonLabel,
+    IonIcon,
+    FormsModule
+  ],
 })
 export class HomePage {
 
-  newTaskStr: string = '';
+  task: string = '';
 
-  tasks: Task[] = [
-    {
-      id: 1,
-      titulo: 'Configuracion de Ionic',
-      descripcion: 'Instalar Node, Angular y Ionic',
-      finalizado: false,
-      prioridad: 'alta'
-    },
-    {
-      id: 2,
-      titulo: 'Aprender Angular',
-      descripcion: 'Aprender los conceptos basicos de Angular',
-      finalizado: false,
-      prioridad: 'media'
-    }
-  ];
+  tasks: Task[] = [];
+
+  constructor() {
+    addIcons({
+      addOutline
+    });
+  }
 
   addTask() {
-    const titulo = this.newTaskStr.trim();
 
-    if (titulo === '') {
+    const titulo = this.task.trim();
+
+    if (!titulo) {
+      console.log('La tarea esta vacia');
       return;
     }
 
-    const duplicado = this.tasks.some(
-      (t) => t.titulo.toLowerCase() === titulo.toLowerCase()
+    const existe = this.tasks.some(
+      tarea => tarea.titulo.toLowerCase() === titulo.toLowerCase()
     );
 
-    if (duplicado) {
+    if (existe) {
+      console.log('La tarea ya existe');
       return;
     }
 
@@ -52,9 +78,13 @@ export class HomePage {
       titulo: titulo,
       descripcion: '',
       finalizado: false,
+      prioridad: 'media'
     };
 
     this.tasks.push(newTask);
-    this.newTaskStr = '';
+
+    console.log(this.tasks);
+
+    this.task = '';
   }
 }
